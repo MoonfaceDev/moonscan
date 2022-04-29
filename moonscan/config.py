@@ -24,4 +24,4 @@ class Config(BaseModel):
     entity_scan: EntityScan
 
 
-config = Config(**_load_config(Path('~/moonitor/scan/config.json').expanduser()))
+config = Config(**_load_config(Path('/etc/moonitor/scan/config.json').expanduser()))
