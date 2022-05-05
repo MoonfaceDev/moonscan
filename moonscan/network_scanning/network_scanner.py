@@ -14,17 +14,17 @@ class NetworkScanner(BaseNetworkScanner):
     def __init__(self, ports_to_scan):
         self._online_test = PingOnlineTest()
         self._hostname_provider = SocketHostnameProvider()
-        self._mac_fetcher = SimpleMacProvider()
-        self._mac_vendor_lookup = MacVendorProvider()
+        self._mac_provider = SimpleMacProvider()
+        self._mac_vendor_provider = MacVendorProvider()
         self._port_scanner = SynPortScanner(ports_to_scan)
 
     async def entity_task(self, ip_address: str) -> Optional[NetworkEntity]:
         if not await self._online_test.is_online(ip_address):
             return None
         hostname = self._hostname_provider.get_hostname(ip_address)
-        mac = await self._mac_fetcher.get_mac(ip_address)
+        mac = await self._mac_provider.get_mac(ip_address)
         if mac:
-            vendor = await self._mac_vendor_lookup.get_vendor(mac)
+            vendor = await self._mac_vendor_provider.get_vendor(mac)
         else:
             vendor = ''
         open_ports = await self._port_scanner.scan(ip_address)

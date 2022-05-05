@@ -14,10 +14,10 @@ class SimpleMacProvider(BaseMacProvider):
         return ip_address in addresses
 
     def __init__(self):
-        self._cache_fetcher = CacheMacProvider()
-        self._local_fetcher = LocalMacProvider()
+        self._cache_provider = CacheMacProvider()
+        self._local_provider = LocalMacProvider()
 
     async def get_mac(self, ip_address: str) -> str:
         if SimpleMacProvider._is_localhost(ip_address):
-            return await self._local_fetcher.get_mac(ip_address)
-        return await self._cache_fetcher.get_mac(ip_address)
+            return await self._local_provider.get_mac(ip_address)
+        return await self._cache_provider.get_mac(ip_address)
