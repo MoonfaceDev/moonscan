@@ -5,7 +5,7 @@ import ipaddress
 from pymongo import MongoClient
 
 from moonscan.config import config
-from moonscan.network_entity.ports.nmap_port_list_generator import NmapPortListGenerator
+from moonscan.port_list.nmap_port_list_provider import NmapPortListProvider
 from moonscan.network_scanning.base_network_scanner import BaseNetworkScanner
 from moonscan.network_scanning.network_scanner import NetworkScanner
 from moonscan.scan_output.base_scan_output import BaseScanOutput
@@ -21,7 +21,7 @@ def init_scan_output() -> BaseScanOutput:
 
 
 def init_scanner() -> BaseNetworkScanner:
-    ports_to_scan = NmapPortListGenerator().generate(config.entity_scan.ports_to_scan)
+    ports_to_scan = NmapPortListProvider().get_list(config.entity_scan.ports_to_scan)
     return NetworkScanner(ports_to_scan)
 
 

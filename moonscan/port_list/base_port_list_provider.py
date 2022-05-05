@@ -2,7 +2,7 @@ from abc import abstractmethod, ABC
 from typing import List
 
 
-class BasePortListGenerator(ABC):
+class BasePortListProvider(ABC):
     @abstractmethod
-    def generate(self, number_of_ports: int) -> List[int]:
+    def get_list(self, number_of_ports: int) -> List[int]:
         raise NotImplementedError()
