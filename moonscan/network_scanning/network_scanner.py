@@ -1,7 +1,9 @@
 import asyncio
 from typing import List, Optional
 
+from moonscan.network_entity.hostname.netbios_hostname_provider import NetBIOSHostnameProvider
 from moonscan.network_entity.hostname.socket_hostname_provider import SocketHostnameProvider
+from moonscan.network_entity.hostname.union_hostname_provider import UnionHostnameProvider
 from moonscan.network_entity.vendor.mac_vendor_provider import MacVendorProvider
 from moonscan.network_entity.mac.simple_mac_provider import SimpleMacProvider
 from moonscan.network_entity.network_entity import NetworkEntity
@@ -13,7 +15,7 @@ from moonscan.network_scanning.base_network_scanner import BaseNetworkScanner
 class NetworkScanner(BaseNetworkScanner):
     def __init__(self, ports_to_scan):
         self._online_test = PingOnlineTest()
-        self._hostname_provider = SocketHostnameProvider()
+        self._hostname_provider = UnionHostnameProvider(SocketHostnameProvider(), NetBIOSHostnameProvider())
         self._mac_provider = SimpleMacProvider()
         self._mac_vendor_provider = MacVendorProvider()
         self._port_scanner = SynPortScanner(ports_to_scan)
@@ -21,7 +23,7 @@ class NetworkScanner(BaseNetworkScanner):
     async def entity_task(self, ip_address: str) -> Optional[NetworkEntity]:
         if not await self._online_test.is_online(ip_address):
             return None
-        hostname = self._hostname_provider.get_hostname(ip_address)
+        hostname = await self._hostname_provider.get_hostname(ip_address)
         mac = await self._mac_provider.get_mac(ip_address)
         if mac:
             vendor = await self._mac_vendor_provider.get_vendor(mac)
