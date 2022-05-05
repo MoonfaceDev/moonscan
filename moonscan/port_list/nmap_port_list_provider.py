@@ -2,16 +2,16 @@ import re
 from pathlib import Path
 from typing import List
 
-from moonscan.network_entity.ports.base_port_list_generator import BasePortListGenerator
+from moonscan.port_list.base_port_list_provider import BasePortListProvider
 from moonscan.network_entity.ports.exceptions import PortNumberOverflowError, PortsFileNotFoundError, \
     BadPortsFileError
 
 
-class NmapPortListGenerator(BasePortListGenerator):
+class NmapPortListProvider(BasePortListProvider):
     def __init__(self, path: Path = Path('/usr/share/nmap/nmap-services')):
         self._path = path
 
-    def generate(self, number_of_ports: int) -> List[int]:
+    def get_list(self, number_of_ports: int) -> List[int]:
         if not self._path.is_file():
             raise PortsFileNotFoundError()
         with self._path.open('r') as file:

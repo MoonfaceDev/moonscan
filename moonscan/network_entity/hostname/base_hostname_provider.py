@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 
-class BaseMacFetcher(ABC):
+class BaseHostnameProvider(ABC):
     @abstractmethod
-    async def fetch(self, ip_address: str) -> str:
+    async def get_hostname(self, ip_address: str) -> str:
         raise NotImplementedError()
