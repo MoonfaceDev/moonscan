@@ -18,11 +18,12 @@ class MongoScanOutput(BaseScanOutput):
             'scan_time': datetime.now()
         })
         for entity in results:
-            self._devices_collection.update_one({
-                'entity.mac': entity.mac
-            }, {
-                '$set': {
-                    'entity': entity.dict(),
-                    'scan_time': datetime.now()
-                }
-            }, upsert=True)
+            if entity.mac:
+                self._devices_collection.update_one({
+                    'entity.mac': entity.mac
+                }, {
+                    '$set': {
+                        'entity': entity.dict(),
+                        'scan_time': datetime.now()
+                    }
+                }, upsert=True)
