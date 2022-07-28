@@ -14,7 +14,7 @@ from moonscan.task_scheduler import TaskScheduler
 
 
 def init_scan_output() -> BaseScanOutput:
-    database = MongoClient().get_database('moonlan')
+    database = MongoClient('mongo').get_database('moonlan')
     scans_collection = database.get_collection('scans')
     devices_collection = database.get_collection('devices')
     return MongoScanOutput(scans_collection, devices_collection)
