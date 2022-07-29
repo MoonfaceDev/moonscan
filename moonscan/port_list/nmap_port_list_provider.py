@@ -8,7 +8,7 @@ from moonscan.network_entity.ports.exceptions import PortNumberOverflowError, Po
 
 
 class NmapPortListProvider(BasePortListProvider):
-    def __init__(self, path: Path = Path('/etc/moonitor/scan/nmap-services')):
+    def __init__(self, path: Path = Path('nmap-services')):
         self._path = path
 
     def get_list(self, number_of_ports: int) -> List[int]:
